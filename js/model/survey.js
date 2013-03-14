@@ -57,6 +57,7 @@ Survey.include({
                 email: "" //答题人email
             };
 
+            //console.log(JSON.stringify(surveyModel))
             //            $.ajax({
             //                url: "/surveyPlatform/examination/saveExam",
             //                type: "POST",
@@ -72,22 +73,17 @@ Survey.include({
     },
 
     _getQuestionHtml: function () {
-        var question_html = "";
-
-        $("#survey-preview-list").find("input[class='add-break']").each(function (index, element) {
-            //            if ($(element).val() === "checked") {
-            //                $(element).parent(".question_set").replaceWith("<div class='page'>分页</div>");
-            //            }
-            //            else {
-            //                $(element).parent(".question_set").remove();
-            //            }
-        });
-
-        question_html += "<ul style='list-style-type: none'>";
-        question_html += $("#survey-preview-list").html();
-        question_html += "</ul>";
-
-        return question_html;
+        $("#survey-preview-list").children().each(function(index, element) {
+            if($(element).find(".add-break").attr("checked")){
+                $(element).find("div :last").html("分页");
+            } else {
+                $(element).find("div :last").remove();
+            }
+        }).parent()
+            .find(".province").html("<option>请选择</option>")
+            .find(".city").html("<option>请选择</option>")
+            .find(".district").html("<option>请选择</option>");
+        return $("#survey-preview-list").html();
     },
 
     _getTopicList: function () {
