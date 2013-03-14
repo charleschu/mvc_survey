@@ -56,7 +56,6 @@ Survey.include({
                 result_id: "", //答题ID
                 email: "" //答题人email
             };
-
             //console.log(JSON.stringify(surveyModel))
             //            $.ajax({
             //                url: "/surveyPlatform/examination/saveExam",
@@ -75,9 +74,9 @@ Survey.include({
     _getQuestionHtml: function () {
         $("#survey-preview-list").children().each(function(index, element) {
             if($(element).find(".add-break").attr("checked")){
-                $(element).find("dd :last").html("分页");
+                $(element).find("div :last").html("分页");
             } else {
-                $(element).find("dd :last").remove();
+                $(element).find("div :last").remove();
             }
         }).parent()
             .find(".province").html("<option>请选择</option>")

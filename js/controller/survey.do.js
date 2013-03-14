@@ -1,10 +1,10 @@
 /**
-* Created with JetBrains WebStorm.
-* User: ChuwaJack
-* Date: 13-3-13
-* Time: 上午10:31
-* To change this template use File | Settings | File Templates.
-*/
+ * Created with JetBrains WebStorm.
+ * User: ChuwaJack
+ * Date: 13-3-13
+ * Time: 上午10:31
+ * To change this template use File | Settings | File Templates.
+ */
 var SurveyDo = Spine.Controller.sub({
     elements: {
         "#page_cont": "page_cont"
@@ -17,7 +17,7 @@ var SurveyDo = Spine.Controller.sub({
     },
 
     show: function () {
-        this.pagingSurvey();
+       this.pagingSurvey();
     },
 
     init: function () {
@@ -36,46 +36,46 @@ var SurveyDo = Spine.Controller.sub({
     areaSelectChange: function (e) {
         var options = "";
         switch ($(e.target).next().attr('class')) {
-            case "province":
-                for (var i = 0; i < data_province.length; i++) {
+            case "province" :
+                for (var i = 0; i < data_province.length; i++){
                     var option = "<option value='" + data_province[i].code + "'>" + data_province[i].name + "</option>";
                     options += option;
                 }
                 break;
             case "city":
-                for (var i = 0; i < data_city.length; i++) {
-                    if (data_city[i].code.substring(0, 2) === e.target.value.substring(0, 2)) {
+                for (var i = 0; i < data_city.length; i++){
+                    if(data_city[i].code.substring(0,2) === e.target.value.substring(0,2)) {
                         var option = "<option value='" + data_city[i].code + "'>" + data_city[i].name + "</option>";
                         options += option;
                     }
                 }
                 break;
-            case "district":
-                for (var i = 0; i < data_district.length; i++) {
-                    if (data_district[i].code.substring(0, 4) === e.target.value.substring(0, 4)) {
+            case  "district":
+                for (var i = 0; i < data_district.length; i++){
+                    if(data_district[i].code.substring(0,4) === e.target.value.substring(0,4)) {
                         var option = "<option value='" + data_district[i].code + "'>" + data_district[i].name + "</option>";
                         options += option;
                     }
                 }
                 break;
-            default:
+            default :
                 break;
         }
-        $(e.target.nextElementSibling).empty().append("<option>请选择</option>" + options);
+        $(e.target.nextElementSibling).empty().append("<option>请选择</option>" + options );
     },
 
     pagingSurvey: function () {
         var that = this;
         $("#page_cont").empty();
-        $(json.question_html).each(function (index, element) {
-            if (index >= that.currentIndex) {
-                $("#page_cont").append("<dl>" + $(element).html() + "</dl>");
-                if ($(element).find(".pagingTag").size() !== 0) {
+        $(json.question_html).each(function(index, element) {
+            if( index >= that.currentIndex ) {
+                $("#page_cont").append($(element).html());
+                if($(element).find(".pagingTag").size() !== 0){
                     that.currentIndex = index + 1;
                     return false;
                 };
             }
-            if (index + 1 === $(json.question_html).size()) {
+            if(index + 1 === $(json.question_html).size()){
                 $("#save-answer").show();
                 $(".btn_blue_3").hide();
             } else {
@@ -85,7 +85,7 @@ var SurveyDo = Spine.Controller.sub({
         $("#page_cont").find(".pagingTag").remove();
     },
 
-    saveAnswer: function () {
+    saveAnswer: function() {
         var answerlist = [];
         var aa = [];
         $(json.topic_list).each(function (index, element) {
@@ -155,11 +155,11 @@ var SurveyDo = Spine.Controller.sub({
 
         var answer = {
             exam_id: "513efa775558883fbc56ce3c",
-            start_time: "11/3/2013",
+            start_time:"11/3/2013",
             end_time: "11/3/2013",
-            is_effective: "Y", //('Y':有效，'N':无效,(默认'Y'))
+            is_effective: "Y",//('Y':有效，'N':无效,(默认'Y'))
             email: json.email,
-            answer_list: aa
+            answer_list:aa
         };
         console.log(JSON.stringify(answer));
         $.ajax({
