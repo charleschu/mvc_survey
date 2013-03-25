@@ -493,6 +493,7 @@
                                     <select id="action_questions"></select>
                                     <select id="action_options"></select>
                                     <select id="actionType"><option value="0">显示</option><option value="1">不显示</option></select>
+                                    <select id="survey_validation" style="display:none"><option value="0">无效</option></select>
                                 </div>
                                 <div class="clear"></div>
                         </script>
@@ -526,6 +527,7 @@
                                     <option value="2">跳转</option></select>
                                 <label>终止提示</label>
                                 <input type="text" id="quota_message">
+                                <select id="quota_action_question_list" style="display:none"></select>
                             </div>
                         </script>
                         <script type="text/x-jquery-tmpl" id="quota-template">

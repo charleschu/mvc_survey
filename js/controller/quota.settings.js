@@ -4,6 +4,7 @@ var QuotaSettings = Spine.Controller.sub({
     },
 
     events: {
+        "change #quota_action": "changeActionType",
         "click .one_quota": "showQuota",
         "click .delete_quota": "deleteQuota",
         "click #save_quota": "saveQuota",
@@ -31,6 +32,7 @@ var QuotaSettings = Spine.Controller.sub({
         $('#quota-setting-template').tmpl().appendTo($('#quota_setting'));
         $(surveyInstance.questions).each(function(i,e) {
             $('#question-list-template').tmpl({"index":i+1,"question":e.description}).appendTo($('#quota_questions'));
+            $('#question-list-template').tmpl({"index":i+1,"question":e.description}).appendTo($('#quota_action_question_list'));
             if (i==0) {
                 $('#quota_question_options').append("<option>全部</option>");
                 $(e.options).each(function(i,e) {
@@ -47,6 +49,18 @@ var QuotaSettings = Spine.Controller.sub({
             width:600,
             renderTo: 'quota_select_result'
         });
+    },
+
+    changeActionType: function() {
+        var type = $('#quota_action').find("option:selected").val();
+        if (type === "2") {
+            $('#quota_message').hide();
+            $('#quota_action_question_list').show();
+        }
+        else {
+            $('#quota_message').show();
+            $('#quota_action_question_list').hide();
+        }
     },
 
     changeOption: function() {

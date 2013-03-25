@@ -4,6 +4,7 @@ var LogicSettings = Spine.Controller.sub({
     },
 
     events: {
+        "change #logic_type": "changeActionType",
         "click .one_logic": "showLogic",
         "click .delete_logic": "deleteLogic",
         "click #save_logic": "saveLogic",
@@ -50,6 +51,34 @@ var LogicSettings = Spine.Controller.sub({
             width:600,
             renderTo: 'logic_select_result'
         });
+    },
+
+    changeActionType: function() {
+        var type = $('#logic_type').find("option:selected").val();
+        console.log(type);
+        switch(type) {
+            case "0":
+                $('#action_questions').show();
+                $('#action_options').show();
+                $('#actionType').show();
+                $('#survey_validation').hide();
+                break;
+            case "1":
+                $('#action_questions').show();
+                $('#action_options').hide();
+                $('#actionType').hide();
+                $('#survey_validation').hide();
+                break;
+            case "2":
+                //TODO:甄别
+                break;
+            case "3":
+                $('#action_questions').hide();
+                $('#action_options').hide();
+                $('#actionType').hide();
+                $('#survey_validation').show();
+        }
+
     },
 
     changeOption: function() {
