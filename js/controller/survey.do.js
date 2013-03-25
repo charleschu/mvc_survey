@@ -116,7 +116,7 @@ var SurveyDo = Spine.Controller.sub({
             isValid = 1;
         };
         //nothing has been chosen
-        if (selected === 0) {
+        if (selected === 0  && question.necessary) {
             alert("第" + no + "题未选择");
             isValid = 1;
         }
@@ -148,10 +148,12 @@ var SurveyDo = Spine.Controller.sub({
             case "1":
                 var chosen = this.validTextArea(selected, question, element);
                 //max selection validation
-                this.validMaxMinSelect(chosen, question);
+                if(question.necessary){// TODO: need confirm priority
+                    this.validMaxMinSelect(chosen, question);
+                }
                 break;
             case "3":
-                if ($(element).find('input').val() === '' || $(element).find('textarea').val() === '') {
+                if (($(element).find('input').val() === '' || $(element).find('textarea').val() === '') && question.necessary) {
                     alert("第" + no + "题未填写内容")
                     isValid = 1;
                 };
@@ -159,7 +161,7 @@ var SurveyDo = Spine.Controller.sub({
             case "4":
                 $(element).find("option:selected").each(function(i,e){
                     var regionType = (typeof [i==0 ? "省" : "市", "区县"][i] !== "undefined") ? i==0 ? "省" : "市" : "区县";
-                    if ($(e).val() === "0") {
+                    if ($(e).val() === "0"  && question.necessary) {
                         alert("第" + no + "题" + regionType + "未选");
                         isValid = 1;
                     };
@@ -378,8 +380,8 @@ var SurveyDo = Spine.Controller.sub({
                 this._doControlLogic(item);
                 break;
             case "1"://跳转
-                //TODO: verify and push Answer first here, need to confirm(when one necessary question has not answered)
-                this.pushAnswer(true);
+                //TODO: push Answer into answer_list first here(did), need to confirm(when one necessary question has not answered)
+                answer_list = answer_list.concat(answer_current_list);
                 this._doSkipLogic(item.action.queN);
                 break;
             case "2"://映射
