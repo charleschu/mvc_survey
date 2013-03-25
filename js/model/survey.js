@@ -96,6 +96,9 @@ Survey.include({
                 max_num: 0, //最多可选数量
                 min_num: 0, //最少可选数量
                 area_type: "", //"区域类型",[0省1市2区]
+                matrixType: '',
+                xOptions: '',
+                yOptions: '',
                 options: null
             };
 
@@ -105,6 +108,18 @@ Survey.include({
 
             if (element.minSelection) {
                 topic.min_num = element.minSelection;
+            }
+
+            if (element.matrixType) {
+                topic.matrixType = element.matrixType
+            }
+
+            if (element.xOptions) {
+                topic.xOptions = element.xOptions
+            }
+
+            if (element.yOptions) {
+                topic.yOptions = element.yOptions
             }
 
             switch (element.type) {
