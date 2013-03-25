@@ -283,7 +283,7 @@ var SurveyDo = Spine.Controller.sub({
     //test_rules: '[{"logicName":"","logicType":"0","condition":[{"question":"1.test1","option":"全部","answer":"不回答","description":"1.test1全部不回答","question_index":"1","option_index":0,"is_answer":0,"logical_oper":"","id":"","name":"","left_barcket":2,"right_barcket":0,"property":"","dimension_value":"","data_type":"","supplier_id":""},{"question":"1.test1","option":"A.1","answer":"不回答","description":"1.test1A.1不回答","question_index":"1","option_index":1,"is_answer":0,"logical_oper":"OR","id":"","name":"","left_barcket":0,"right_barcket":1,"property":"","dimension_value":"","data_type":"","supplier_id":""},{"question":"2.test2","option":"A.1","answer":"回答","description":"2.test2A.1回答","question_index":"2","option_index":1,"is_answer":1,"logical_oper":"AND","id":"","name":"","left_barcket":0,"right_barcket":1,"property":"","dimension_value":"","data_type":"","supplier_id":""},{"question":"3.test3","option":"全部","answer":"回答","description":"3.test3全部回答","question_index":"3","option_index":0,"is_answer":1,"logical_oper":"OR","id":"","name":"","left_barcket":0,"right_barcket":0,"property":"","dimension_value":"","data_type":"","supplier_id":""}],"action":{"type":"0","queN":"1","optN":"1"}}]',
     //test_rules: '[{"logicName":"1111","logicType":"0","condition":[{"question":"1.gfdgd","option":"A.fgdfgd","answer":"回答","description":"1.gfdgdA.fgdfgd回答","question_index":"1","option_index":1,"is_answer":1,"logical_oper":"","id":"","name":"","left_barcket":0,"right_barcket":0,"property":"","dimension_value":"","data_type":"","supplier_id":""},{"question":"2.gfs","option":"B.r32","answer":"回答","description":"2.gfsB.r32回答","question_index":"2","option_index":2,"is_answer":1,"logical_oper":"AND","id":"","name":"","left_barcket":0,"right_barcket":0,"property":"","dimension_value":"","data_type":"","supplier_id":""}],"action":{"type":"1","queN":"3","optN":"3"}}]',
 
-    //此方法将条件和答案列表比较，最终返回结果，和__runLogic等功能类似，有重复，需要删除一个； TODO：1.对开放题和逻辑题的支持， 2，执行action
+    //此方法将条件和答案列表比较，最终返回结果，和__runLogic等功能类似，有重复，需要删除一个； TODO：1.对开放题和逻辑题的支持， 2，执行action(control and skip ready)
     mapLogic: function (rule) {
         var mapTrue , all_answeredQuestion_answer = answer_list.concat(answer_current_list);
         var jsonRule = JSON.parse(rule);
@@ -345,16 +345,9 @@ var SurveyDo = Spine.Controller.sub({
         $(this.logicList).each(function(index, item){
              if (eval(that.resolveRule(item))) {
                 //如果条件成立则执行rules中的动作，执行方法为doRules
-                //TODO: doRules方法尚未Refactor
                 // this.doRules(item.action);
+                 that._doRules(item);
                 alert("你的条件匹配成功，可以执行动作了");
-                 if(item.logicType === "0" && item.action.type === "0" ) { //控制逻辑  显示
-                     //$($("#page_cont>div>dl")[item.action.queN]).show();
-                     $($("#page_cont>div>dl")[item.action.queN].children[1].children[item.action.optN - 1]).show();
-                 } else if(item.logicType === "0" && item.action.type === "1") {//控制逻辑  不显示
-                     //$($("#page_cont>div>dl")[item.action.queN]).hide();
-                     $($("#page_cont>div>dl")[item.action.queN].children[1].children[item.action.optN - 1]).hide();
-                 }
                 //TODO: delete current logic when whose action is triggered
              } else {
                 alert("你的答案没有匹配条件");
@@ -375,12 +368,63 @@ var SurveyDo = Spine.Controller.sub({
 
     },
 
-    _triggerAction : function () {
+    _doRules : function (item) {
+        switch (item.logicType) { //控制
+            case "0":
+                this._doControlLogic(item);
+                break;
+            case "1"://跳转
+                //TODO: verify and push Answer first here
+                this._doSkipLogic(item.action.queN);
+                break;
+            case "2"://映射
+                this._doMapLogic();
+                break;
+            case "3": //甄别
+                this._doDistinguishLogic();
+                break;
+            default :
+                break;
+        }
+    },
 
+    _doControlLogic : function (item) {
+        if(item.action.type === "0" ) { //显示
+            //$($("#page_cont>div>dl")[item.action.queN]).show();
+            $($("#page_cont>div>dl")[item.action.queN].children[1].children[item.action.optN - 1]).show();
+        } else if(item.action.type === "1") {//不显示
+            //$($("#page_cont>div>dl")[item.action.queN]).hide();
+            $($("#page_cont>div>dl")[item.action.queN].children[1].children[item.action.optN - 1]).hide();
+        }
+    },
+
+    _doSkipLogic : function (queN) {
+        console.log(queN);
+        //get item.action.queN, and find it's page num, show this page
+        var questionNum = 0, pageNum = 0;
+        $("#page_cont").children().each(function(index,element){
+            $(element).show();
+            //console.log(index);console.log($(element).children().size())
+            questionNum += $(element).children().size();
+            if(questionNum >= queN) {
+                return false;
+            }
+            pageNum += 1;
+            $(element).hide();
+        });
+        this.currentPage = pageNum - 1;
+    },
+
+    _doMapLogic : function () {
+        console.log("unconfirm:映射");
+    },
+
+    _doDistinguishLogic : function () {
+        console.log("甄别无效");
     },
 
     _runQuota: function () {
-//console.log($(this.logicList));
+    //console.log($(this.logicList));
         for(var obj in answer_current_list) {
             for(var index in this.quotaList) {
                 var questionIndex = answer_current_list[obj].question_no - 1;//要查找的问题对象序号
