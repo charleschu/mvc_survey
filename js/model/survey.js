@@ -115,7 +115,7 @@ Survey.include({
                     topic.question_type = "1";
                     break;
                 case "matrix":
-                    //TODO:create matrix question
+                    topic.question_type = "2";
                     break;
                 case "open":
                     topic.question_type = "3";
