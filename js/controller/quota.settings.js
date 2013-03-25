@@ -106,12 +106,14 @@ var QuotaSettings = Spine.Controller.sub({
         var quota_num = $('#quota_num').val();
         var quota_action = $('#quota_action').find("option:selected").val();
         var quota_message = $('#quota_message').val();
+        var quota_turn_question = $('#quota_action_question_list').find("option:selected").val();
         var quotaOne =  new Quota ({
             quota_name: quota_name,
             condition:this.query.getValue(),
             quota_MaxNum: quota_num,
             quota_action: quota_action,
-            quota_message: quota_message
+            quota_message: quota_message,
+            quota_turn_question: quota_turn_question
         });
         if (this.is_update === 0) {
             this.quota_list.push(quotaOne);
