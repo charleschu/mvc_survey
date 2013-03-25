@@ -12,8 +12,8 @@ var SurveyDo = Spine.Controller.sub({
         "change div dl dd select": "areaSelectChange",
         "click #next-page": "pagingSurvey",
         "click .page_next": "pageNext",
-        "change input[type='checkbox']": "selectChange",
-        "change input[type='radio']": "selectChange"
+        "change input[type='checkbox'],input[type='radio']": "selectChange",
+        "blur input[type='text'],textarea": "selectChange"
     },
 
     show: function () {
@@ -88,9 +88,11 @@ var SurveyDo = Spine.Controller.sub({
         }
     },
 
+    //trigger used for open and open option select question; single and multi select question
     selectChange: function (e) {
-        console.log();
-        //TODO:1 bind event when it is open option
+        if(e.type === 'change' && $(e.target).parent().attr('class') === 'text-area'){
+            return false;
+        }
         answer_current_list = [];
         this.pushAnswer(false);
         this.resolveRules();
@@ -349,10 +351,10 @@ var SurveyDo = Spine.Controller.sub({
                 //如果条件成立则执行rules中的动作，执行方法为doRules
                 // this.doRules(item.action);
                  that._doRules(item);
-                //alert("你的条件匹配成功，可以执行动作了");
+                alert("你的条件匹配成功，可以执行动作了");
                 //TODO: delete current logic when whose action is triggered
              } else {
-                //alert("你的答案没有匹配条件");
+                alert("你的答案没有匹配条件");
              }
         });
     },
