@@ -25,6 +25,7 @@ var SurveyDo = Spine.Controller.sub({
         this.currentPage = 0;
         this.show();
         this.quotaResult = true;
+        this.validSurvey = true;
         this.logicList = JSON.parse(json.logic_control_js);
         this.quotaList = JSON.parse(json.quota_control_js);
         console.log(this.logicList);
@@ -87,7 +88,8 @@ var SurveyDo = Spine.Controller.sub({
         }
     },
 
-    selectChange: function () {
+    selectChange: function (e) {
+        console.log();
         //TODO:1 bind event when it is open option
         answer_current_list = [];
         this.pushAnswer(false);
@@ -289,7 +291,7 @@ var SurveyDo = Spine.Controller.sub({
         var jsonRule = JSON.parse(rule);
         for (var key in jsonRule) {
             var currentQueAnswer;
-            if(all_answeredQuestion_answer[parseInt(key) - 1].answer_detail_list[0]){
+            if(all_answeredQuestion_answer[parseInt(key) - 1].answer_detail_list[0]){ //TODO: 对多选题的支持
                 currentQueAnswer = all_answeredQuestion_answer[parseInt(key) - 1].answer_detail_list[0].question_value;
             } else {
                 return false;
@@ -347,10 +349,10 @@ var SurveyDo = Spine.Controller.sub({
                 //如果条件成立则执行rules中的动作，执行方法为doRules
                 // this.doRules(item.action);
                  that._doRules(item);
-                alert("你的条件匹配成功，可以执行动作了");
+                //alert("你的条件匹配成功，可以执行动作了");
                 //TODO: delete current logic when whose action is triggered
              } else {
-                alert("你的答案没有匹配条件");
+                //alert("你的答案没有匹配条件");
              }
         });
     },
@@ -374,7 +376,8 @@ var SurveyDo = Spine.Controller.sub({
                 this._doControlLogic(item);
                 break;
             case "1"://跳转
-                //TODO: verify and push Answer first here
+                //TODO: verify and push Answer first here, need to confirm(when one necessary question has not answered)
+                this.pushAnswer(true);
                 this._doSkipLogic(item.action.queN);
                 break;
             case "2"://映射
@@ -421,6 +424,9 @@ var SurveyDo = Spine.Controller.sub({
 
     _doDistinguishLogic : function () {
         console.log("甄别无效");
+        this.validSurvey = false;
+        console.log(this.validSurvey);
+
     },
 
     _runQuota: function () {
