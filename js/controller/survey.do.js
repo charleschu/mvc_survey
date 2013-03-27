@@ -62,9 +62,9 @@ var SurveyDo = Spine.Controller.sub({
                 var i = 1;
                 $(randomOption).each(function(ind, ele) {
                     var front = ele.innerHTML.substr(0, ele.innerHTML.indexOf(">") + 1);
-                    var end = ele.innerHTML.substr(ele.innerHTML.indexOf(">") + 1);
-                    var html = front + String.fromCharCode(64 + i) + "." + end;
-                    $(element).append("<div class='" + $(ele).attr('class') + "'>" + html + "</div>");
+                    var end = ele.innerHTML.substr(ele.innerHTML.indexOf(">") + 3);
+                    ele.innerHTML = front + String.fromCharCode(64 + i) + "." + end;
+                    $(element).append(ele);
                     i++;
                 });
             }
