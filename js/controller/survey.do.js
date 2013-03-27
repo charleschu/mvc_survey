@@ -19,6 +19,7 @@ var SurveyDo = Spine.Controller.sub({
     show: function () {
         $(".paper_next_container:gt(0)").hide();
         this._initQuestion();
+        this._randomOption();
     },
 
     init: function () {
@@ -49,6 +50,37 @@ var SurveyDo = Spine.Controller.sub({
         $($("#page_cont").children()[0]).show();
         this._submitButtonShow();
         $("#page_cont").find(".questionary_list_opera").remove();
+    },
+
+    _randomOption: function() {
+        //TODO: refactor here,need to modify function to get question answer
+        var that = this;
+        $("#page_cont dl dd").each(function(index, element){
+            var randomOption = that._randomArray($(element).find('div').toArray());
+            if(randomOption.length > 0) {
+                $(element).empty();
+                var i = 1;
+                $(randomOption).each(function(ind, ele) {
+                    var front = ele.innerHTML.substr(0, ele.innerHTML.indexOf(">") + 1);
+                    var end = ele.innerHTML.substr(ele.innerHTML.indexOf(">") + 1);
+                    var html = front + String.fromCharCode(64 + i) + "." + end;
+                    $(element).append("<div class='" + $(ele).attr('class') + "'>" + html + "</div>");
+                    i++;
+                });
+            }
+        });
+    },
+
+    _randomArray: function (array) {
+        var x = new Array(), y, j = 0;
+
+        for(var i = array.length; i >= 1; i--) {
+            y = Math.floor(Math.random() * array.length);
+            x[j] = array[y];
+            array.splice(y,1);
+            j++;
+        }
+        return x;
     },
 
     pageNext: function (e) {
@@ -191,7 +223,7 @@ var SurveyDo = Spine.Controller.sub({
                         if (e.checked === true) {
                             if ($(e).parent().find('textarea').length !== 0) {
                                 answer_detail_list.push({
-                                    question_value: json.topic_list[questionIndex].options[i].item_num,
+                                    question_value: json.topic_list[questionIndex].options[$(e).attr('originIndex').charCodeAt() - 65].item_num,
                                     open_question_value: $(e).parent().find('textarea').val(),
                                     province: "",
                                     city: "",
@@ -200,7 +232,7 @@ var SurveyDo = Spine.Controller.sub({
                             }
                             else {
                                 answer_detail_list.push({
-                                    question_value: json.topic_list[questionIndex].options[i].item_num,
+                                    question_value: json.topic_list[questionIndex].options[i$(e).attr('originIndex').charCodeAt() - 65].item_num,
                                     open_question_value: "",
                                     province: "",
                                     city: "",
@@ -354,7 +386,7 @@ var SurveyDo = Spine.Controller.sub({
                 // this.doRules(item.action);
                  that._doRules(item);
                 alert("你的条件匹配成功，可以执行动作了");
-                //TODO: delete current logic when whose action is triggered
+                //TODO: delete current logic when whose action is triggered(to be confirm)
              } else {
                 alert("你的答案没有匹配条件");
              }
@@ -368,10 +400,6 @@ var SurveyDo = Spine.Controller.sub({
         } else if(this.logicList[index].logicType === "0" && this.logicList[index].action.type === "1" && condition){//控制逻辑  显示
             $("#page_cont>div>dl")[this.logicList[index].action.queN].show();
         }
-    },
-
-    _detectCondition: function () { //include logic and quota
-
     },
 
     _doRules : function (item) {
@@ -430,7 +458,6 @@ var SurveyDo = Spine.Controller.sub({
         console.log("甄别无效");
         this.validSurvey = false;
         console.log(this.validSurvey);
-
     },
 
     _runQuota: function () {

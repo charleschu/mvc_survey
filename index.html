@@ -426,11 +426,11 @@
                         <script type="text/x-jquery-tmpl" id="radio-option-template">
                             <div class=${arrangement}>
                                 {{if type == "textarea"}}
-                                    <label><input type=${questionType} name=${name}/>${index}.${content} </label>
+                                    <label><input type=${questionType} name=${name} originIndex=${index} />${content} </label>
                                     <textarea></textarea>
                                     ${unit}
                                 {{else}}
-                                    <label><input type=${type} name=${name}/> ${index}.${content}</label>
+                                    <label><input type=${type} name=${name} originIndex=${index} />${content}</label>
                                 {{/if}}
                             </div>
                         </script>
