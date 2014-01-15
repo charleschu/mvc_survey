@@ -7,13 +7,13 @@
     <script>
         $(function () {
             $("#start-test-button").click(function () {
-                $.ajax({
-                    url: "http://172.16.134.57:30403/surveyPlatform/examination/getExam/513efa775558883fbc56ce3c/aaa@163.com",
-                    type: "GET",
-                    success: function (response, option) {
-                        $("div").append(response.question_html);
-                    }
-                });
+                // $.ajax({
+                //     url: "http://172.16.134.57:30403/surveyPlatform/examination/getExam/513efa775558883fbc56ce3c/aaa@163.com",
+                //     type: "GET",
+                //     success: function (response, option) {
+                //         $("div").append(response.question_html);
+                //     }
+                // });
 //                $.ajax({
 //                    url: "http://172.16.134.57:30403/surveyPlatform/examination/saveAnswer",
 //                    type: "POST",
@@ -22,13 +22,23 @@
 //                        
 //                    }
 //                });
+                // $.getJSON("api/testuser", function(data) {
+                //     $(data).each(function() {
+                //         $("#test").append("<div>" +
+                //             this.name + "</div>");
+                //     });
+                // });
+
+                $.post("api/testuser",{"":[{id:3,name:"sdf",remark:"ddd"},{id:4,name:"df",remark:"ddhhd"}]},function(){
+
+                });
             });
         });
     </script>
 </head>
 <body>
     <input id="start-test-button" type="button" value="开始" />
-    <div>
+    <div id="test">
     </div>
 </body>
 </html>

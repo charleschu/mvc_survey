@@ -31,53 +31,36 @@ Survey.include({
         if (this.questions && this.questions.length > 0) {
             var surveyModel = {
                 ID: "", //编号
-                question_no: $("#question-no").val(), //问卷编号
                 question_name: $("#question-name").val(), //问卷名
-                client_id: $("#client-id").val(), //客户编号
                 public_pic: $("#upload-public-pic").val(), //问卷宣传图
-                end_date: $("#end-date").val(), //结束时间
                 face_page: $("#upload-face-page").val(), //封面
                 logo: $("#upload-logo").val(), //logo
                 bottom_page: $("#upload-bottom-age").val(), //封底
-                template_id: $("#template-id").val(), //问卷模板
-                join_point: parseInt($("#join-point").val()), //参与问卷给与积分
-                complate_point: parseInt($("#complate-point").val()), //完成问卷给予积分
                 examination_type: $("#examination-type").val(), //"问卷类型",[0趣味1试用2商务]
                 examination_detail: $("#examination-detail").val(), //问卷说明
-                quota: 0, //配额
-                ques_count: this.questions.length, //总试题量
-                company: "", //所属公司
                 remark: $("#remark").val(), //备注
-                status: "", //状态
                 question_html: this._getQuestionHtml(), //问题HTML
-                logic_control_js: surveyInstance.logic_control_js, //逻辑js
-                quota_control_js: surveyInstance.quota_control_js, //配额js
-                topic_list: this._getTopicList(),
-                result_id: "", //答题ID
-                email: "" //答题人email
+                topic_list: this._getTopicList()
             };
-            console.log(JSON.stringify(surveyModel))
-            //            $.ajax({
-            //                url: "http://172.16.134.57:30403/surveyPlatform/examination/saveExam",
-            //                type: "POST",
-            //                data: JSON.stringify(surveyModel),
-            //                success: function (response, option) {
-            //                    //alert(response);
-            //                },
-            //                complete: function (response, option) {
-            //                    //alert(response.responseText);
-            //                }
-            //            });
+            console.log(JSON.stringify(surveyModel));
+            $.ajax({
+                url: "api/mysurvey",
+                type: "POST",
+                data: surveyModel,
+                success: function(response, option) {
+                    if(response == 0){
+                        alert("保存成功！");
+                    }else{
+                        alert("保存失败！");
+                    }
+                }
+            });
         }
     },
 
     _getQuestionHtml: function () {
         $("#survey-preview-list").children().each(function(index, element) {
-            if($(element).find(".add-break").attr("checked")){
-                $(element).find("dd :last").html("分页");
-            } else {
-                $(element).find("dd :last").remove();
-            }
+            $(element).find("dd :last").remove();
         }).parent()
             .find(".province").html("<option>请选择</option>")
             .find(".city").html("<option>请选择</option>")
@@ -151,7 +134,8 @@ Survey.include({
                     item_pic: "", //选项图片
                     unit: e.unit, //单位
                     validate_flag: "", //是否验证
-                    validate_type: "" //验证类型
+                    validate_type: "", //验证类型
+                    score: 0
                 };
                 ops.push(op);
             });

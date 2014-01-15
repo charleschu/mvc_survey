@@ -22,8 +22,8 @@ var BaseInfo = Spine.Controller.sub({
     },
 
     nextPage: function() {
-      this.baseInfoValid();
-      if (isValid == 1) {return}
+      //this.baseInfoValid();
+      //if (isValid == 1) {return}
       $('.survey_name').find('div>span').text($('#question-name').val());
       //turn to next page
       $('#tabs').tabs('enable', 1);

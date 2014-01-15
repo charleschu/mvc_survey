@@ -16,13 +16,23 @@
     <script type="text/javascript" src="js/lib/province_city_district/json-array-of-province.js"></script>
     <script>
         $(function () {
-            var GloablApp = Spine.Controller.sub({
-                el: $("body"),
-                init: function () {
-                    this.surveyDo = new SurveyDo({ el: $("#main") });
-                }
+            $(".paper_next_container:gt(0)").hide();
+            var surveyId = location.search.split('?')[1].split("id=")[1];
+            $.getJSON("api/mysurvey", {
+                id: surveyId
+            }, function(data) {
+                json = data;
+                var GloablApp = Spine.Controller.sub({
+                    el: $("body"),
+                    init: function() {
+                        this.surveyDo = new SurveyDo({
+                            el: $("#main")
+                        });
+                    }
+                });
+                window.App = new GloablApp();
             });
-            window.App = new GloablApp();
+            
             String.prototype.duplicate = function( numTimes ){
                 var str = "";
                 for(var i=0;i<numTimes;i++){

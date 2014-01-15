@@ -170,7 +170,9 @@ var QuestionPreview = Spine.Controller.sub({
     },
 
     submitSurvey: function () {
-        surveyInstance.submitSurvey();
+        if(confirm("是否确认提交问卷？")){
+            surveyInstance.submitSurvey();
+        }
     },
 
     initSelectList: function (areaType, parentCode){

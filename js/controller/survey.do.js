@@ -12,23 +12,17 @@ var SurveyDo = Spine.Controller.sub({
         "change div dl dd select": "areaSelectChange",
         "click #next-page": "pagingSurvey",
         "click .page_next": "pageNext",
-        "change input[type='checkbox']": "selectChange",
-        "change input[type='radio']": "selectChange"
+        //"change input[type='checkbox']": "selectChange",
+        //"change input[type='radio']": "selectChange"
     },
 
     show: function () {
-        $(".paper_next_container:gt(0)").hide();
         this._initQuestion();
     },
 
     init: function () {
         this.currentPage = 0;
         this.show();
-        this.quotaResult = true;
-        this.logicList = JSON.parse(json.logic_control_js);
-        this.quotaList = JSON.parse(json.quota_control_js);
-        console.log(this.logicList);
-        console.log(this.quotaList);
     },
 
     _initQuestion: function () {
@@ -76,7 +70,8 @@ var SurveyDo = Spine.Controller.sub({
             answer_current_list = [];
         };
         isValid = 0;
-        this.pushAnswer(true);
+        //this.pushAnswer(true);
+        this.pushAnswer(false);
         if (isValid == 1) { return;}
 
         if(this.quotaResult) {
@@ -253,7 +248,8 @@ var SurveyDo = Spine.Controller.sub({
         };
         pushAnswerNum = questionIndex;
         isValid = 0;
-        this.pushAnswer(true);
+        //this.pushAnswer(true);
+        this.pushAnswer(false);
         if (isValid == 1) {return};
         $(answer_current_list).each(function(i,e) {
             answer_list.push(e);
